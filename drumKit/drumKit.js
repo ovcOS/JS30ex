@@ -7,3 +7,10 @@ window.addEventListener('keydown', function(e){
   sound.play();
   key.classList.add('playing');
 });
+
+
+const keys = document.querySelectorAll('.key');
+
+keys.forEach(key => key.addEventListener('transitionend', function() {
+  key.classList.remove('playing')
+}));
