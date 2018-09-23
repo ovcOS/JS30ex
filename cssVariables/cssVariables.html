@@ -21,19 +21,7 @@
 
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
-  <script>
-
-  const controls = document.querySelectorAll('.controls input');
-  
-  function updateVariable() {
-    const suffix = this.dataset.sizing || "";
-    document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
-  };
-
-  controls.forEach(control => control.addEventListener('change', updateVariable));
-  controls.forEach(control => control.addEventListener('mousemove', updateVariable));
-
-  </script>
+  <script type="text/javascript" src="cssVariables.js"></script>
 
 </body>
 </html>
