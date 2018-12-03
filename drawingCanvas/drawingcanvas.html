@@ -13,7 +13,57 @@
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
 
-    console.log(context);
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    context.strokeStyle = 'black';
+    context.lineJoin = 'round';
+    context.lineCap = 'round';
+    context.lineWidth = 10;
+
+    let drawing = false;
+    let xPosition = 0;
+    let yPosition = 0;
+    let hue = 0;
+    let direction = true;
+
+    function draw(event) {
+      if(!drawing) return;
+      console.log(context.lineWidth);
+
+      context.strokeStyle = `hsl(${hue}, 90%, 50%)`;
+      context.beginPath();
+      context.moveTo(xPosition, yPosition);
+      context.lineTo(event.offsetX, event.offsetY);
+      context.stroke();
+
+      xPosition = event.offsetX;
+      yPosition = event.offsetY;
+      hue++
+      if(hue >= 360){
+        hue = 0
+      }
+
+      if(context.lineWidth > 200 || context.lineWidth < 10) {
+        direction = !direction
+      }
+
+      if(direction) {
+        context.lineWidth++
+      } else {
+        context.lineWidth--
+      }
+    }
+
+    canvas.addEventListener('mousedown', () => {
+      drawing = true;
+      xPosition = event.offsetX;
+      yPosition = event.offsetY;
+    });
+
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('mouseout', () => drawing = false);
 
 
     </script>
