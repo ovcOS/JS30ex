@@ -18,6 +18,10 @@ body {
   justify-content: center;
 }
 
+.viewer {
+  cursor: pointer;
+}
+
 .player {
   max-width: 750px;
   border: 5px solid rgba(0,0,0,0.2);
