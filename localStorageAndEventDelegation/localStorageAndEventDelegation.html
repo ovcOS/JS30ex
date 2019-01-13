@@ -15,20 +15,29 @@
 
   <div class="wrapper">
     <h2>LOCAL TAPAS</h2>
-    <p></p>
-    <ul class="plates">
-      <li>Loading Tapas...</li>
-    </ul>
+    <p class="loading">
+    </p>
+    <ul class="plates"></ul>
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
+      <input type="button" value="Check all" class="checkAll">
+      <input type="button" value="Uncheck all" class="uncheckAll">
+      <input type="button" value="Delete all" class="deleteAll">
     </form>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const loadingList = document.querySelector('.loading');
+
+
+  const deleteAll = document.querySelector('.deleteAll');
+  const checkAll = document.querySelector('.checkAll');
+  const uncheckAll = document.querySelector('.uncheckAll');
+
+  let items = JSON.parse(localStorage.getItem('items'))|| [];
 
   function manageTapas(e){
     e.preventDefault();
@@ -38,22 +47,74 @@
       done: false,
     };
     items.push(item);
-    addTapas(items, itemsList)
+    listTapas(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items))
     this.reset();
   };
 
-  function addTapas(items = [], itemsList){
+  function checkIfEmpty(){
+    if (items.length == 0) {
+      loadingList.innerHTML = `Loading plates...`
+    } else {
+      loadingList.innerHTML = ` `
+    };
+  };
+
+  function listTapas(items = [], itemsList){
     itemsList.innerHTML = items.map((item, i) => {
       return `
         <li>
-          <input type='checkbox' id='item${i}'>
+          <input type='checkbox' data-index='${i}' id='item${i}' ${item.done ? 'checked' : ''}>
           <label for='item${i}'>${item.userInput}</label>
         </li>
       `
     }).join('');
+    checkIfEmpty();
+  };
+
+  function keepChecks(e){
+    if (!e.target.matches('input')) return;
+    var index = e.target.dataset.index;
+    items[index].done = !items[index].done;
+    localStorage.setItem('items', JSON.stringify(items));
+  };
+
+  function deleteItems(){
+    if (items.length == 0){
+      itemsList.innerHTML = `<li>Nothing to delete. Type something...</li>`
+    } else {
+      localStorage.removeItem('items');
+      items = [];
+      itemsList.innerHTML = `<li>All deleted. Start typing again...</li>`
+    };
+    checkIfEmpty();
+  };
+
+  function checkItems(){
+    items.map(item => {
+      item.done = true;
+      localStorage.setItem('items', JSON.stringify(items));
+    });
+    listTapas(items, itemsList);
+  };
+
+  function uncheckItems(){
+    items.map(item => {
+      item.done = false;
+      localStorage.setItem('items', JSON.stringify(items));
+    });
+    listTapas(items, itemsList);
   };
 
   addItems.addEventListener('submit', manageTapas);
+  itemsList.addEventListener('click', keepChecks);
+  deleteAll.addEventListener('click', deleteItems);
+  checkAll.addEventListener('click', checkItems);
+  uncheckAll.addEventListener('click', uncheckItems);
+
+
+  listTapas(items, itemsList);
+
 </script>
 
 
