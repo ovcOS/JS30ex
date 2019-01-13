@@ -29,6 +29,31 @@
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
   const items = [];
+
+  function manageTapas(e){
+    e.preventDefault();
+    let userInput = this.querySelector('[name=item]').value;
+    let item = {
+      userInput: userInput,
+      done: false,
+    };
+    items.push(item);
+    addTapas(items, itemsList)
+    this.reset();
+  };
+
+  function addTapas(items = [], itemsList){
+    itemsList.innerHTML = items.map((item, i) => {
+      return `
+        <li>
+          <input type='checkbox' id='item${i}'>
+          <label for='item${i}'>${item.userInput}</label>
+        </li>
+      `
+    }).join('');
+  };
+
+  addItems.addEventListener('submit', manageTapas);
 </script>
 
 
