@@ -32,6 +32,33 @@
   </style>
 
 <script>
+const hero = document.querySelector('.hero');
+const title = hero.querySelector('h1')
+
+function shadowMove(e){
+  const distance = 100;
+  let xCoord = e.offsetX;
+  let yCoord = e.offsetY;
+  //this can be destructured into:
+  // let {offsetX: xCoord, offsetY: yCoord} = e;
+
+  const height = hero.offsetHeight;
+  const width = hero.offsetWidth;
+
+  if (this !== e.target){
+    xCoord += e.target.offsetLeft;
+    yCoord += e.target.offsetTop;
+  };
+
+
+  const moveX = Math.round((xCoord/width * distance) - distance /2)
+  const moveY = Math.round((yCoord/width * distance) - distance /2)
+
+  title.style.textShadow = (`${moveX}px ${moveY}px 0px rgba(0, 0, 0, 0.5)`);
+
+};
+
+hero.addEventListener('mousemove', shadowMove)
 </script>
 </body>
 </html>
