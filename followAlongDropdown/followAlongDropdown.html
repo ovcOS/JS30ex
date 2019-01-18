@@ -5,7 +5,7 @@
   <title>Follow Along Nav</title>
 </head>
 <body>
-  <h2>Cool</h2>
+  <h2>Look at this hover coolness!</h2>
   <nav class="top">
     <div class="dropdownBackground">
       <span class="arrow"></span>
@@ -16,7 +16,7 @@
         <a href="#">About Me</a>
         <div class="dropdown dropdown1">
           <div class="bio">
-            <img src="https://logo.clearbit.com/wesbos.com">
+            <img src="">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
           </div>
         </div>
@@ -98,7 +98,7 @@
     perspective: 600px;
   }
   .cool > li > a {
-    color: yellow;
+    color: #fcfcfc;
     text-decoration: none;
     font-size: 20px;
     background: rgba(0,0,0,0.2);
@@ -137,7 +137,6 @@
   .trigger-enter-active .dropdown {
     opacity: 1;
   }
-
   .dropdownBackground {
     width: 100px;
     height: 100px;
@@ -199,6 +198,37 @@
 </style>
 
 <script>
+const listItems = document.querySelectorAll('.cool > li');
+const navbar = document.querySelector('.top');
+const background = document.querySelector('.dropdownBackground');
+
+function hoverIn(){
+  this.classList.add('trigger-enter');
+  setTimeout(() => this.classList.add('trigger-enter-active'), 100);
+  background.classList.add('open');
+
+  const dropdown = this.querySelector('.dropdown');
+  const dropdownPosition = dropdown.getBoundingClientRect();
+  const nav = navbar.getBoundingClientRect();
+  let correctedWidth = dropdownPosition.left - nav.left;
+  let correctedHeight = dropdownPosition.top - nav.top;
+
+  background.style.width = `${dropdownPosition.width}px`;
+  background.style.height = `${dropdownPosition.height}px`;
+  background.style.transform =
+    `translate(${correctedWidth}px, ${correctedHeight}px)`;
+};
+
+function hoverOut(){
+  this.classList.remove('trigger-enter');
+  setTimeout(() => this.classList.remove('trigger-enter-active'), 100);
+  background.classList.remove('open');
+};
+
+listItems.forEach(item => item.addEventListener('mouseenter', hoverIn));
+listItems.forEach(item => item.addEventListener('mouseleave', hoverOut));
+
+
 </script>
 
 </body>
